@@ -49,7 +49,7 @@ public class TestAlgorithm {
     }
 
     /**
-     * JPS plus算法,不算预处理,跑完85ms
+     * JPS plus算法,不算预处理,跑完85ms;预处理时间大概需要2s
      */
     @Test
     public void setJPSPlus() {

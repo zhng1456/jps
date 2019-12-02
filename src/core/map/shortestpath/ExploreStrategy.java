@@ -6,6 +6,7 @@ import core.util.Tuple2;
 import core.util.Vector;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * ExploreStrategy defines which strategy is used to explore a grid map.
@@ -43,7 +44,9 @@ interface ExploreStrategy {
      */
     Tuple2<Vector, Double> exploreStrategy(MapFacade map, Vector currentPoint, Vector direction, Double cost,
             Vector goal, MovingRule movingRule);
-
+    //Collection<Tuple2<Vector, Double>>
+    Tuple2<Vector, Double> exploreStrategy(MapFacade map, Vector currentPoint, Vector direction, Double cost,
+            Vector goal, MovingRule movingRule, Collection<Tuple2<Vector, Double>> candidates,Map<Vector, Vector> pathPredecessors);
     /**
      * Returns the moving directions to process for the given currentPoint.<br>
      * <br>

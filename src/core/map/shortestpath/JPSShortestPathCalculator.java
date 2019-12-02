@@ -7,6 +7,7 @@ import core.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * JPS implementation of ShortestPathCalculator
@@ -62,5 +63,42 @@ class JPSShortestPathCalculator extends ShortestPathCalculator {
         }
         // 递归
         return exploreStrategy(map, candidate, direction, cost, goal, movingRule);
+    }
+
+    @Override
+    public Tuple2<Vector, Double> exploreStrategy(MapFacade map, Vector currentPoint, Vector direction, Double cost,
+            Vector goal, MovingRule movingRule, Collection<Tuple2<Vector, Double>> candidates, Map<Vector, Vector> pathPredecessors) {
+        // 沿着direction到了下一个点candidate
+        Vector candidate = currentPoint.add(direction);
+        // 不可达则直接返回
+        if (!map.isPassable(candidate) || movingRule.isCornerCut(map, currentPoint, direction))
+            return null;
+        // 新的cost，即g值;这里就是走了多少步
+        cost += Math.sqrt(Math.abs(direction.getX()) + Math.abs(direction.getY()));
+        // 到达了终点,返回candiate(认为终点也是跳点)
+        if (candidate.equals(goal)){
+            // 新增
+            //pathPredecessors.put(currentPoint, candidate);
+            //candidates.add(new Tuple2<>(candidate, cost));
+            return new Tuple2<>(candidate, cost);
+        }
+            
+        // 根据JPS算法的原理,有强制邻居，则这个点是跳点
+        if (movingRule.getForcedDirections(map, candidate, direction).size() > 0)
+            return new Tuple2<>(candidate, cost);
+        
+        //这里是我新增的部分
+        //走到这里说明不是终点,也不是跳点,仍然要递归下去
+        //candidates.add(new Tuple2<>(candidate, cost));
+        //pathPredecessors.put(currentPoint, candidate);
+        
+        
+        // 求子方向;原来是水平jump，则要转换为向上下2个方向Jump
+        for (Vector subordinatedDirection : movingRule.getSubordinatedDirections(direction)) {
+            if (exploreStrategy(map, candidate, subordinatedDirection, cost, goal, movingRule, candidates,pathPredecessors) != null)
+                return new Tuple2<>(candidate, cost);
+        }
+        // 递归
+        return exploreStrategy(map, candidate, direction, cost, goal, movingRule, candidates,pathPredecessors);
     }
 }

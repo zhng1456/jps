@@ -77,6 +77,7 @@ public class ShortestPathResult {
         Vector current = goal;
         do {
             Vector next = pathPredecessors.get(current);
+            if(next == null) System.out.println(current + "前1个点为null");
             Vector direction = current.getDirectionTo(next);
             Boolean flag = true;
             while (!current.equals(next)) {

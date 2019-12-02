@@ -17,7 +17,7 @@ public class TestJpsWithObs {
     public void testJPS() throws Exception{
         MapController controller = new MapController();
         controller.setJPSShortestPath();
-        controller.setMapWithObs(new Vector(4,4),new Vector[]{new Vector(0,1),new Vector(2,1)});
+        controller.setMapWithObs(new Vector(4,4),new Vector[]{new Vector(0,1),new Vector(2,2)});
         controller.setOrthogonalNeighborMovingRule();
         controller.setEuclideanHeuristic();
         Tuple2<ShortestPathResult, Long> res = controller.runShortstPath(new Vector(0,0), new Vector(3,3));

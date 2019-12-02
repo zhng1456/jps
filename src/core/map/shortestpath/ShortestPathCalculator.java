@@ -129,7 +129,7 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
                         pathDistance);
             }
             // 去找当前点的下一个点
-            openList.addAll(getOpenListCandidates(map, currentPoint, currentPredecessor, goal, movingRule).stream()
+            openList.addAll(getOpenListCandidates(map, currentPoint, currentPredecessor, goal, movingRule, pathPredecessors).stream()
                     .filter(candidate -> pathPredecessors.get(candidate.getArg1()) == null)
                     .map(candidate -> new Tuple3<>(candidate.getArg1(), currentPoint,
                             new Tuple2<>(pathDistance + candidate.getArg2(),
@@ -151,13 +151,12 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
      */
 
     private Collection<Tuple2<Vector, Double>> getOpenListCandidates(MapFacade map, Vector currentPoint,
-            Vector predecessor, Vector goal, MovingRule movingRule) {
+            Vector predecessor, Vector goal, MovingRule movingRule, Map<Vector, Vector> pathPredecessors) {
         Collection<Vector> directions = getDirectionsStrategy(map, currentPoint, predecessor, movingRule);
-
         Collection<Tuple2<Vector, Double>> candidates = new ArrayList<>();
         for (Vector dir : directions) {
             // 各个算法的exploreStrategy不同
-            Tuple2<Vector, Double> candidate = exploreStrategy(map, currentPoint, dir, 0.0, goal, movingRule);
+            Tuple2<Vector, Double> candidate = exploreStrategy(map, currentPoint, dir, 0.0, goal, movingRule, candidates,pathPredecessors);
             if (candidate != null && !prune(candidate.getArg1(), dir, goal))
                 candidates.add(candidate);
         }

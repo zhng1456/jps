@@ -7,6 +7,7 @@ import core.util.Tuple2;
 import core.util.Vector;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * AStar implementation of ShortestPathCalculator
@@ -36,5 +37,12 @@ class AStarShortestPathCalculator extends ShortestPathCalculator {
         }
         return new Tuple2<>(candidate,
                 Math.abs(direction.getX()) + Math.abs(direction.getY()) < 2 ? 1 : MathUtil.SQRT2);
+    }
+
+    @Override
+    public Tuple2<Vector, Double> exploreStrategy(MapFacade map, Vector currentPoint, Vector direction, Double cost,
+            Vector goal, MovingRule movingRule, Collection<Tuple2<Vector, Double>> candidates,Map<Vector, Vector> pathPredecessors) {
+        // 为了改进JPS算法而新增
+        return exploreStrategy(map,currentPoint,direction,cost,goal,movingRule);
     }
 }

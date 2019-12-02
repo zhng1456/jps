@@ -7,6 +7,7 @@ import core.util.Tuple3;
 import core.util.Vector;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Implementation of ShortestPathCalculator based on precomputed data.
@@ -64,5 +65,12 @@ class PreCalculatedShortestPathCalculator extends ShortestPathCalculator {
                 return new Tuple2<>(candidate, cost + preprocessedPoint.getArg2());
         }
         return null;
+    }
+
+    @Override
+    public Tuple2<Vector, Double> exploreStrategy(MapFacade map, Vector currentPoint, Vector direction, Double cost,
+            Vector goal, MovingRule movingRule, Collection<Tuple2<Vector, Double>> candidates,Map<Vector, Vector> pathPredecessors) {
+        // TODO Auto-generated method stub
+        return exploreStrategy(map,currentPoint,direction,cost,goal,movingRule);
     }
 }

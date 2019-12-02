@@ -2,11 +2,13 @@ package core.map.shortestpath;
 
 import core.map.MapFacade;
 import core.map.movingrule.MovingRule;
+import core.util.Tuple2;
 import core.util.Tuple3;
 import core.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * JPS implementation of PreCalculationShortestPathPreprocessing
@@ -64,5 +66,12 @@ class JPSPreCalculationShortestPathPreprocessing extends PreCalculationShortestP
         putPreprocessing(currentPoint, direction,
                 new Tuple3<>(result.getArg1(), result.getArg2() - cost, result.getArg3()));
         return result;
+    }
+
+    @Override
+    public Tuple2<Vector, Double> exploreStrategy(MapFacade map, Vector currentPoint, Vector direction, Double cost,
+            Vector goal, MovingRule movingRule, Collection<Tuple2<Vector, Double>> candidates,Map<Vector, Vector> pathPredecessors) {
+        // 为了改进JPS而新增
+        return exploreStrategy(map,currentPoint,direction,cost,goal,movingRule);
     }
 }
