@@ -105,10 +105,10 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
         Map<Vector, Vector> pathPredecessors = new HashMap<>();
        // open表
         PriorityQueue<Tuple3<Vector, Vector, Tuple2<Double, Double>>> openList = new PriorityQueue<>((p, q) -> {
-//            if (p.getArg3().getArg1() + p.getArg3().getArg2() > q.getArg3().getArg1() + q.getArg3().getArg2())
-//                return 1;
-            if (p.getArg3().getArg2() > q.getArg3().getArg2())
+            if (p.getArg3().getArg1() + p.getArg3().getArg2() > q.getArg3().getArg1() + q.getArg3().getArg2())
                 return 1;
+//            if (p.getArg3().getArg2() > q.getArg3().getArg2())
+//                return 1;
             return -1;
         });
         // 起点加入open表

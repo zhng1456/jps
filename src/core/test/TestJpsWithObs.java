@@ -18,8 +18,7 @@ public class TestJpsWithObs {
         MapController controller = new MapController();
         controller.setJPSShortestPath();
         controller.setMapWithObs(new Vector(4,4),new Vector[]{new Vector(1,1),new Vector(2,2)});
-        //controller.setOrthogonalNeighborMovingRule();
-        controller.setUncutNeighborMovingRule();
+        controller.setOrthogonalNeighborMovingRule();
         controller.setManhattanHeuristic();
         Tuple2<ShortestPathResult, Long> res = controller.runShortstPath(new Vector(0,0), new Vector(3,3));
         System.out.println("ºÄÊ±" + res.getArg2());

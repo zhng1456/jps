@@ -48,8 +48,16 @@ public class MapController {
     private MovingRuleStrategy movingRuleStrategy = new MovingRuleStrategy();
     private HeuristicStrategy heuristicStrategy = new HeuristicStrategy();
     private ShortestPathCalculatorStrategy shortestPathCalculatorStrategy = new ShortestPathCalculatorStrategy();
-
+    
     /* ------- MapFactory Operations ------- */
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
 
     /**
      * Generates an empty Map instance and takes control over it.

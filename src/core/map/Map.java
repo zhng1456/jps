@@ -30,7 +30,7 @@ import java.util.Arrays;
  * @see MapFactory
  * @since 1.0
  */
-class Map implements MapFacade {
+public class Map implements MapFacade {
 
     private final boolean[][] map;
     private int xDim;
