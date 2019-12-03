@@ -71,8 +71,10 @@ class JPSShortestPathCalculator extends ShortestPathCalculator {
         // 沿着direction到了下一个点candidate
         Vector candidate = currentPoint.add(direction);
         // 不可达则直接返回
-        if (!map.isPassable(candidate) || movingRule.isCornerCut(map, currentPoint, direction))
-            return null;
+        if (!map.isPassable(candidate) || movingRule.isCornerCut(map, currentPoint, direction)){
+            // candidate越界了，则返回边界点
+            return new Tuple2<>(currentPoint, cost);
+        }
         // 新的cost，即g值;这里就是走了多少步
         cost += Math.sqrt(Math.abs(direction.getX()) + Math.abs(direction.getY()));
         // 到达了终点,返回candiate(认为终点也是跳点)
