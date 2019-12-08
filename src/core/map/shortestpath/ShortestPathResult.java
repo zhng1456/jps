@@ -19,7 +19,7 @@ public class ShortestPathResult {
     private Collection<Vector> openList;
     private Map<Vector, Vector> pathPredecessors;
     private double cost;
-
+    private List<Tuple2<Vector, Boolean>> path = new LinkedList<>();
     /**
      * Init a ShortestPathResult containing all selected data during he search.
      *
@@ -73,7 +73,7 @@ public class ShortestPathResult {
      * @since 1.0
      */
     public List<Tuple2<Vector, Boolean>> getShortestPath() {
-        List<Tuple2<Vector, Boolean>> path = new LinkedList<>();
+        
         Vector current = goal;
         do {
             Vector next = pathPredecessors.get(current);
@@ -121,8 +121,24 @@ public class ShortestPathResult {
     public double getCost() {
         return this.cost;
     }
-    
+    // 计算转弯次数
     public int calcTurnTime(){
-        return -1;
+        int res = 0;
+        int size = path.size();
+        for(int i = 1;i < size -1;i++){
+            Vector cur = path.get(i).getArg1();
+            Vector pre = path.get(i-1).getArg1();
+            Vector next = path.get(i+1).getArg1();
+            // 判断是否转弯
+            // 在一条线上
+            if((pre.getX() == cur.getX() && cur.getX() == next.getX()) ||
+                    (pre.getY() == cur.getY() && cur.getY() == next.getY())){
+                
+            }
+            else{
+                res++;
+            }
+        }
+        return res;
     }
 }

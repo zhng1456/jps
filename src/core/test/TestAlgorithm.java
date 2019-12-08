@@ -73,7 +73,8 @@ public class TestAlgorithm {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println(res.getArg1().getShortestPath());
-        System.out.println(res.getArg2());
+        System.out.println("路径为:"+res.getArg1().getShortestPath());
+        System.out.println("寻路时间"+res.getArg2());
+        System.out.println("转弯次数:" + res.getArg1().calcTurnTime());
     }
 }
