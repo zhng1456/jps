@@ -105,7 +105,12 @@ public class ShortestPathCalculatorStrategy {
     public void setJPSShortestPath() {
         this.shortestPathCalculator = new JPSShortestPathCalculator(new NoShortestPathPruning());
     }
-
+    /**
+     * 我改进的JPS算法
+     */
+    public void setMyJPSShortestPath() {
+        this.shortestPathCalculator = new JPSShortestPathCalculator(new NoShortestPathPruning());
+    }
     /**
      * Memorises the JPS+ implementation.<br>
      * <br>

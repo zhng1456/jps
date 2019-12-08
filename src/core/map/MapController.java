@@ -379,7 +379,12 @@ public class MapController {
     public void setJPSShortestPath() {
         this.shortestPathCalculatorStrategy.setJPSShortestPath();
     }
-
+    /**
+     * 使用我改进的JPS算法
+     */
+    public void setMyJPSShortestPath(){
+        this.shortestPathCalculatorStrategy.setMyJPSShortestPath();
+    }
     /**
      * Sets new used function to find the shortest path between two points on a
      * grid with passable and non passable points: JPS+.<br>

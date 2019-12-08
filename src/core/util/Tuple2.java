@@ -15,6 +15,14 @@ public class Tuple2<A, B> {
 
     private A arg1;
     private B arg2;
+    
+    public void setArg1(A arg1) {
+        this.arg1 = arg1;
+    }
+
+    public void setArg2(B arg2) {
+        this.arg2 = arg2;
+    }
 
     /**
      * Init a Tuple2 with the given parameters.

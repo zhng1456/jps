@@ -1,5 +1,14 @@
 package core.map.shortestpath;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import core.exception.NoPathFoundException;
 import core.map.MapFacade;
 import core.map.heuristic.Heuristic;
@@ -7,9 +16,6 @@ import core.map.movingrule.MovingRule;
 import core.util.Tuple2;
 import core.util.Tuple3;
 import core.util.Vector;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * ShortestPathCalculator provides a way to find a shortest path on a grid map
@@ -107,8 +113,6 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
         PriorityQueue<Tuple3<Vector, Vector, Tuple2<Double, Double>>> openList = new PriorityQueue<>((p, q) -> {
             if (p.getArg3().getArg1() + p.getArg3().getArg2() > q.getArg3().getArg1() + q.getArg3().getArg2())
                 return 1;
-//            if (p.getArg3().getArg2() > q.getArg3().getArg2())
-//                return 1;
             return -1;
         });
         // 起点加入open表
@@ -131,9 +135,14 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
                         pathDistance);
             }
             // 去找当前点的下一个点
-            openList.addAll(getOpenListCandidates(map, currentPoint, currentPredecessor, goal, movingRule, pathPredecessors).stream()
-                    .filter(candidate -> pathPredecessors.get(candidate.getArg1()) == null)
-                    .map(candidate -> new Tuple3<>(candidate.getArg1(), currentPoint,
+            // 这里简化一下，不用这么复杂的流式集合
+            Stream<Tuple2<Vector, Double>> neighbs = getOpenListCandidates(map, currentPoint, currentPredecessor, goal, movingRule, pathPredecessors).stream()
+            .filter(candidate -> pathPredecessors.get(candidate.getArg1()) == null);
+            // 在这里加一个转弯代价的correct
+            // 加上这个语句后就是个改进的JPS
+            neighbs = correctByTurn(neighbs, currentPoint, pathPredecessors);
+            //
+            openList.addAll(neighbs.map(candidate -> new Tuple3<>(candidate.getArg1(), currentPoint,
                             new Tuple2<>(pathDistance + candidate.getArg2(),
                                     heuristic.estimateDistance(candidate.getArg1(), goal))))
                     .collect(Collectors.toList()));
@@ -163,5 +172,30 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
                 candidates.add(candidate);
         }
         return candidates;
+    }
+    /**
+     * 对转弯的点做一个校正
+     * @param neighbs
+     * @param currentPoint
+     * @param pathPredecessors
+     * @return
+     */
+    public Stream<Tuple2<Vector, Double>> correctByTurn(Stream<Tuple2<Vector, Double>> neighbs, Vector cur, Map<Vector, Vector> pathPredecessors){
+        return neighbs.map(neighb -> {
+            // 当前点的前一个点
+            Vector pre = pathPredecessors.get(cur);
+            if(pre == null){
+                return neighb;
+            }
+            // 在一条线上
+            if((pre.getX() == cur.getX() && cur.getX() == neighb.getArg1().getX()) ||
+                    (pre.getY() == cur.getY() && cur.getY() == neighb.getArg1().getY())){
+                
+            }
+            else{
+                neighb.setArg2(neighb.getArg2() + 2.0);
+            }
+            return neighb;
+        }).collect(Collectors.toList()).stream();
     }
 }

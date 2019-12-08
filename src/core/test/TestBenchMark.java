@@ -63,7 +63,7 @@ public class TestBenchMark {
      */
     @After
     public void printRes() {
-        int taskNum = 1000;
+        int taskNum = 100;
         TaskUtil util = new TaskUtil();
         List<List<Vector>> taskList = util.getRandomTask(controller.getMap(),taskNum);
         long averageTime = 0;
@@ -72,6 +72,7 @@ public class TestBenchMark {
             Tuple2<ShortestPathResult, Long> res = null;
             try {
                 res = controller.runShortstPath(task.get(0), task.get(1));
+                System.out.println("任务起点为:" + task.get(0) +"  任务终点为:"+task.get(1));
                 long time = res.getArg2();
                 averageTime += time;
                 maxTime = Math.max(maxTime, time);

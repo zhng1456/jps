@@ -121,4 +121,8 @@ public class ShortestPathResult {
     public double getCost() {
         return this.cost;
     }
+    
+    public int calcTurnTime(){
+        return -1;
+    }
 }
