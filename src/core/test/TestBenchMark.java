@@ -68,6 +68,7 @@ public class TestBenchMark {
         List<List<Vector>> taskList = util.getRandomTask(controller.getMap(),taskNum);
         long averageTime = 0;
         long maxTime = -1;
+        int averageTurnTime = 0;
         for(List<Vector> task : taskList){
             Tuple2<ShortestPathResult, Long> res = null;
             try {
@@ -78,11 +79,14 @@ public class TestBenchMark {
                 maxTime = Math.max(maxTime, time);
                 System.out.println("路径长度: " + res.getArg1().getShortestPath().size());
                 System.out.println("寻路时间: " + res.getArg2());
+                int turnTime = res.getArg1().calcTurnTime();
+                averageTurnTime += turnTime;
             } catch (NoPathFoundException e) {
                 e.printStackTrace();
             }
         }
         System.out.println("平均时间: " + (double)(averageTime/taskNum));
         System.out.println("最长时间: " + maxTime);
+        System.out.println("平均转弯次数" + (double)averageTurnTime / taskNum);
     }
 }
