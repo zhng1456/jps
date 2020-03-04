@@ -98,7 +98,14 @@ public class MapController {
         this.map = mapFactory.createRandomMap(dimension, pPassable);
         return this.map;
     }
-
+    
+    public void writeRandomMap(Vector dimension, double pPassable) throws Exception{
+        mapFactory.writeRandomMap(dimension, pPassable);
+    }
+    public MapFacade readTestMap(Vector dimension, double pPassable) throws Exception{
+        this.map = mapFactory.readTestMap(dimension, pPassable);
+        return this.map;
+    }
     /**
      * Generates a maze Map instance and takes control over it.
      *

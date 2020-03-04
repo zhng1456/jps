@@ -6,6 +6,7 @@ import core.util.Vector;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import java.util.Arrays;
  * @see MapFactory
  * @since 1.0
  */
-public class Map implements MapFacade {
+public class Map implements MapFacade, Serializable{
 
     private final boolean[][] map;
     private int xDim;

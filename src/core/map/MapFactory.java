@@ -8,7 +8,13 @@ import core.util.Vector;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -64,6 +70,28 @@ class MapFactory {
                 }
             }
         }
+        return map;
+    }
+    /*
+     * 写入地图，保证每次测试时地图是相同的
+     */
+    void writeRandomMap(Vector dimension, double pPassable) throws Exception{
+        Map map = createRandomMap(dimension, pPassable);
+        ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(
+                new File("testmap_" + dimension + "_" + pPassable)));
+        oo.writeObject(map);
+        oo.close();
+    }
+    /**
+     * 读取测试地图
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    Map readTestMap(Vector dimension, double pPassable) throws Exception{
+        String filename = "testmap_" + dimension + "_" + pPassable;
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(
+                new File(filename)));
+        Map map = (Map)ois.readObject();
         return map;
     }
     /**

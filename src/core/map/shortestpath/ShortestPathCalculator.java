@@ -140,7 +140,7 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
             .filter(candidate -> pathPredecessors.get(candidate.getArg1()) == null);
             // 在这里加一个转弯代价的correct
             // 加上这个语句后就是个改进的JPS
-            //neighbs = correctByTurn(neighbs, currentPoint, pathPredecessors);
+            neighbs = correctByTurn(neighbs, currentPoint, pathPredecessors);
             //
             openList.addAll(neighbs.map(candidate -> new Tuple3<>(candidate.getArg1(), currentPoint,
                             new Tuple2<>(pathDistance + candidate.getArg2(),

@@ -23,9 +23,10 @@ public class TestBenchMark {
      * @throws MapInitialisationException
      */
     @Before
-    public void init() throws MapInitialisationException {
+    public void init() throws Exception {
         controller.setEuclideanHeuristic();// 使用欧式距离
-        controller.setRandomMap(new Vector(500,500), 0.9);// 在500x500的地图上,障碍物比例0.1
+        controller.readTestMap(new Vector(300, 300), 0.9);// 从文件中读取地图
+        //controller.setRandomMap(new Vector(300,300), 0.9);// 在500x500的地图上,障碍物比例0.1
         controller.setOrthogonalNeighborMovingRule();// 只允许垂直移动
     }
 
@@ -63,7 +64,7 @@ public class TestBenchMark {
      */
     @After
     public void printRes() {
-        int taskNum = 100;
+        int taskNum = 80;
         TaskUtil util = new TaskUtil();
         List<List<Vector>> taskList = util.getRandomTask(controller.getMap(),taskNum);
         long averageTime = 0;
@@ -85,8 +86,15 @@ public class TestBenchMark {
                 e.printStackTrace();
             }
         }
+        System.out.println("总时间: " + averageTime);
         System.out.println("平均时间: " + (double)(averageTime/taskNum));
         System.out.println("最长时间: " + maxTime);
         System.out.println("平均转弯次数" + (double)averageTurnTime / taskNum);
+    }
+    
+    @Test
+    public void initMap() throws Exception{
+        MapController test = new MapController();
+        test.writeRandomMap(new Vector(500,500), 0.9);
     }
 }
