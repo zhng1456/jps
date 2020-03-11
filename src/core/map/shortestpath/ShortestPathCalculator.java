@@ -117,6 +117,8 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
         });
         // 起点加入open表
         openList.add(new Tuple3<>(start, null, new Tuple2<>(.0, heuristic.estimateDistance(start, goal))));
+        // 测试一下,加一个限制
+        int k = 0;
         while (!openList.isEmpty()) {
             Tuple3<Vector, Vector, Tuple2<Double, Double>> currentPath = openList.poll();
             // 当前点(三元组的第一个参数)
@@ -125,10 +127,20 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
             Vector currentPredecessor = currentPath.getArg2();
             // 距离,f = g + h中的g
             double pathDistance = currentPath.getArg3().getArg1();
-            if (pathPredecessors.get(currentPoint) != null)
+            // 已有前置点则直接continue
+            if (pathPredecessors.get(currentPoint) != null){
                 continue;
+            }
             // 设置前置点
             pathPredecessors.put(currentPoint, currentPredecessor);
+            // 到达了跳数了，也需要返回
+            if(k == 5){
+                Vector interNode = currentPoint;
+                System.out.println("没有到达终点,中间节点为" + interNode);
+                return new ShortestPathResult(start, goal,interNode,
+                        openList.stream().map(entry -> entry.getArg1()).collect(Collectors.toList()), pathPredecessors,
+                        pathDistance);
+            }
             if (currentPoint.equals(goal)) {
                 return new ShortestPathResult(start, goal,
                         openList.stream().map(entry -> entry.getArg1()).collect(Collectors.toList()), pathPredecessors,
@@ -140,12 +152,13 @@ abstract class ShortestPathCalculator implements ExploreStrategy {
             .filter(candidate -> pathPredecessors.get(candidate.getArg1()) == null);
             // 在这里加一个转弯代价的correct
             // 加上这个语句后就是个改进的JPS
-            neighbs = correctByTurn(neighbs, currentPoint, pathPredecessors);
+            // neighbs = correctByTurn(neighbs, currentPoint, pathPredecessors);
             //
             openList.addAll(neighbs.map(candidate -> new Tuple3<>(candidate.getArg1(), currentPoint,
                             new Tuple2<>(pathDistance + candidate.getArg2(),
                                     heuristic.estimateDistance(candidate.getArg1(), goal))))
                     .collect(Collectors.toList()));
+            k++;
         }
         throw new NoPathFoundException(start, goal);
     }

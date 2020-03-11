@@ -20,7 +20,7 @@ import java.util.HashMap;
  * @since 1.0
  */
 abstract class PreCalculationShortestPathPreprocessing implements ExploreStrategy, ShortestPathPreprocessing {
-
+    // 存储所有的跳点到HashMap中
     private HashMap<Vector, HashMap<Vector, Tuple3<Vector, Double, Boolean>>> preprocessing = new HashMap<>();
 
     /**
@@ -51,14 +51,14 @@ abstract class PreCalculationShortestPathPreprocessing implements ExploreStrateg
     }
 
     /**
-     * Returns the stored preprocessed Point to the given key direction and key
-     * point.
+     * 取出存储的跳点
+     * 
      *
      * @param currentPoint
-     *            point on the grid map
+     *            map中的点
      * @param direction
-     *            the direction, the current point is reached.
-     * @return stored preprocessed point considering currentPoint and direction
+     *            方向
+     * @return 已经存储好的跳点
      * @since 1.0
      */
     protected Tuple3<Vector, Double, Boolean> getPreprocessing(Vector currentPoint, Vector direction) {
@@ -68,8 +68,8 @@ abstract class PreCalculationShortestPathPreprocessing implements ExploreStrateg
     }
 
     /**
-     * Stores a Point as preprocessed considering a key point and and a key
-     * direction.
+     * 存跳点的方法
+     * 
      *
      * @param currentPoint
      *            key point

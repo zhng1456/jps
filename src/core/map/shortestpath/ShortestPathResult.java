@@ -7,11 +7,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Contains the result of a shortest path search to give it back to the caller.
+ * 寻路结果类
  *
- * @author Patrick Loka, Danny Rademacher
- * @version 1.0
- * @since 1.0
  */
 public class ShortestPathResult {
 
@@ -20,6 +17,8 @@ public class ShortestPathResult {
     private Map<Vector, Vector> pathPredecessors;
     private double cost;
     private List<Tuple2<Vector, Boolean>> path = new LinkedList<>();
+    // 增加一个中间节点
+    private Vector interNode = null;
     /**
      * Init a ShortestPathResult containing all selected data during he search.
      *
@@ -39,6 +38,16 @@ public class ShortestPathResult {
             Map<Vector, Vector> pathPredecessors, double cost) {
         this.start = start;
         this.goal = goal;
+        this.openList = openList;
+        this.pathPredecessors = pathPredecessors;
+        this.cost = cost;
+    }
+    // 新增构造函数
+    public ShortestPathResult(Vector start, Vector goal, Vector interNode, Collection<Vector> openList,
+            Map<Vector, Vector> pathPredecessors, double cost) {
+        this.start = start;
+        this.goal = goal;
+        this.interNode = interNode;
         this.openList = openList;
         this.pathPredecessors = pathPredecessors;
         this.cost = cost;
@@ -65,7 +74,7 @@ public class ShortestPathResult {
     }
 
     /**
-     * Returns the shortest path.
+     * 根据记录下的parent指针,返回最短的路径
      *
      * @return Set of all points containing to the shortest path and the
      *         information if the point was added to the openList during the
@@ -74,7 +83,7 @@ public class ShortestPathResult {
      */
     public List<Tuple2<Vector, Boolean>> getShortestPath() {
         
-        Vector current = goal;
+        Vector current = interNode!= null ? interNode : goal;
         do {
             Vector next = pathPredecessors.get(current);
             if(next == null) System.out.println(current + "前1个点为null");

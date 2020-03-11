@@ -37,18 +37,20 @@ class JPSPreCalculationShortestPathPreprocessing extends PreCalculationShortestP
     @Override
     public Tuple3<Vector, Double, Boolean> exploreStrategy(MapFacade map, Vector currentPoint, Vector direction,
             Double cost, Vector goal, MovingRule movingRule) {
+        // 避免重复计算，已存储的跳点直接返回
         if (getPreprocessing(currentPoint, direction) != null) {
             Tuple3<Vector, Double, Boolean> preprocessedPoint = getPreprocessing(currentPoint, direction);
             return new Tuple3<>(preprocessedPoint.getArg1(), preprocessedPoint.getArg2() + cost,
                     preprocessedPoint.getArg3());
         }
-
+        // 障碍
         Vector candidate = currentPoint.add(direction);
         if (!map.isPassable(candidate) || movingRule.isCornerCut(map, currentPoint, direction)) {
             return new Tuple3<>(currentPoint, cost, false);
         }
-
+        
         Double stepCost = Math.sqrt(Math.abs(direction.getX()) + Math.abs(direction.getY()));
+        // 有强制邻居即是跳点
         if (movingRule.getForcedDirections(map, candidate, direction).size() > 0) {
             putPreprocessing(currentPoint, direction, new Tuple3<>(candidate, stepCost, true));
             return new Tuple3<>(candidate, cost + stepCost, true);
@@ -60,7 +62,7 @@ class JPSPreCalculationShortestPathPreprocessing extends PreCalculationShortestP
                 return new Tuple3<>(candidate, cost + stepCost, true);
             }
         }
-
+        // 向当前方向递归
         Tuple3<Vector, Double, Boolean> result = exploreStrategy(map, candidate, direction, cost + stepCost, goal,
                 movingRule);
         putPreprocessing(currentPoint, direction,
